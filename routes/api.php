@@ -75,7 +75,6 @@ Route::apiResources([
     'projects/{project_slug}/progress_points' => ProjectProgressPointsController::class,
     'projects/{project_slug}/location' => ProjectLocationController::class,
     'projects/{project_slug}/usp' => ProjectUspController::class,
-    'projects/{unit_id}/units' => ProjectUnitsController::class,
-    'projects/{unit_id}/units/{project_slug}' => ProjectUnitsController::class,
-
+    'projects/{project_slug}/units' => ProjectUnitsController::class,
+    'projects/{project_slug}/units/{id}' => ProjectUnitsController::class,
 ]);
