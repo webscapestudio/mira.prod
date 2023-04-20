@@ -83,7 +83,7 @@ class UnitsCreateScreen extends Screen
                 Input::make('bedrooms_quantity')->title('bedrooms(quantity)')->type('text'),
                 Input::make('bathrooms_quantity')->title('bathrooms(quantity)')->type('text')->required(),
                 Input::make('floor')->title('Floor')->type('number'),
-                Input::make('view')->title('Area')->type('text'),
+                Input::make('view')->title('View')->type('text'),
                 Upload::make('attachment')->title('Pictures')->required()->acceptedFiles('image/*,application/pdf,.psd'),
         ]),
         ];
@@ -91,7 +91,12 @@ class UnitsCreateScreen extends Screen
 
     public function createProjectUnit($project, Request $request)
     {
-
+        $request->validate([
+            'price' => 'required|numeric|max:9999999999',
+            'floor' => 'required|numeric|max:999',
+            'view' => 'required|numeric|max:9999999999',
+            'area' => 'required|numeric|max:9999999999',
+        ]);
         $data = [
             'address' => $request['address'],
             'type' => $request['type'],

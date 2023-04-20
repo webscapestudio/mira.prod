@@ -78,6 +78,9 @@ class HistoryEditScreen extends Screen
 
     public function createOrUpdate(History $history, Request $request)
     {
+        $request->validate([
+            'history.year' => 'required|integer|max:9999',
+        ]);
         $history->fill($request->get('history'))->save();
         if($history->sortdd == null):
             $history->update([

@@ -60,7 +60,7 @@ class InvestmentEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('investment.title')->title('Title')->type('text')->required(),
-                TextArea::make('investment.description')->title('Description')->type('text')->required(),
+                TextArea::make('investment.description')->title('Description')->type('text')->required()->rows(5),
                 Picture::make('investment.image_desc')->title('Image')->acceptedFiles('image/*,application/pdf,.psd')->required(),
             ]),
         ];

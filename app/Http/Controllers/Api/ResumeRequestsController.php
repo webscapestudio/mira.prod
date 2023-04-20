@@ -21,30 +21,39 @@ class ResumeRequestsController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->json()->all();
 
         $validator = Validator::make($input, [
             'name' => 'required',
             'email' => 'required',
             'phone' => 'required',
             'comment' => 'nullable',
-            'attachment' => 'required',
+            'attachment'=> 'nullable'
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()]);
         }
-        if (isset($input['attachment'])) :
-            $input['attachment'] = Storage::disk('public')->put('/mail',  $input['attachment']);
+
+        if($request['attachment']):
+            $files = $request['attachment'];
         endif;
-        $res_request = ResumeRequest::create([
+
+        $res_request = [
             'name' =>  $input['name'],
             'email' => $input['email'],
             'phone' => $input['phone'],
-            'comment' => $input['comment'],
-            'attachment' => $input['attachment'],
-        ]);
-        Mail::to('nikita.andenko@yandex.ru')->send(new ResumeRequestEmail($res_request));
+            'comment' => $input['comment']
+        ];
+  
 
+      Mail::send('mails.resume_request', $res_request, function($message)use ($files) {
+            $message->to('nikita.andenko@yandex.ru')
+                    ->subject('Resume Request Email'); 
+                    foreach ($files as $file){
+                        $message->attach($file);
+                    }
+                    });
+      
         return response()->json([
             "success" => true,
             "message" => "Request sent"

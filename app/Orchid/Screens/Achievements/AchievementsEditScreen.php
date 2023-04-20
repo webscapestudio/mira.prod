@@ -9,7 +9,8 @@ use Orchid\Screen\Fields\Input;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route; 
+use Illuminate\Support\Facades\Route;
+use Orchid\Screen\Fields\TextArea;
 
 class AchievementsEditScreen extends Screen
 {
@@ -64,7 +65,7 @@ class AchievementsEditScreen extends Screen
             Layout::rows([
                 Input::make('achievement.number')->title('Number')->type('number')->required(),
                 Input::make('achievement.addition')->title('Number text')->type('text')->required(),
-                Input::make('achievement.description')->title('Description')->type('text')->required(),
+                TextArea::make('achievement.description')->title('Description')->type('text')->required(),
             ]),
         ];
     }
@@ -72,6 +73,9 @@ class AchievementsEditScreen extends Screen
 
     public function createOrUpdate(Achievements $achievement, Request $request)
     {
+        $request->validate([
+            'achievement.number' => 'required|integer|max:9999',
+        ]);
         $achievement->fill($request->get('achievement'))->save();
         if($achievement->sortdd == null):
             $achievement->update([

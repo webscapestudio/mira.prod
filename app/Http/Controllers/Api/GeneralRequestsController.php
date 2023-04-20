@@ -23,7 +23,8 @@ class GeneralRequestsController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->json()->all();
+
         $validator = Validator::make($input, [
             'name' => 'required',
             'phone' => 'required',
@@ -31,9 +32,15 @@ class GeneralRequestsController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()]);
         }
-        $gen_request = GeneralRequest::create($input);
+        $gen_request = [
+            'name' =>  $input['name'],
+            'phone' => $input['phone']
+        ];
         
-        Mail::to('nikita.andenko@yandex.ru')->send(new GeneralRequestEmail($gen_request));
+        Mail::send('mails.general_request', $gen_request, function($message)use($gen_request) {
+            $message->to('nikita.andenko@yandex.ru')
+                    ->subject('General Request Email');          
+        });
 
         return response()->json([
             "success" => true,

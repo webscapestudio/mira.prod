@@ -7,6 +7,7 @@ use App\Models\AboutUs;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
@@ -64,9 +65,9 @@ class AboutAchievementsCreateScreen extends Screen
         return [ 
 
             Layout::rows([
-                Input::make('number')->required()->title('Title'),
-                Input::make('addition')->required()->title('Short Title'),
-                Input::make('description')->required()->title('Url'),
+                Input::make('number')->required()->title('Number'),
+                Input::make('addition')->required()->title('Addition'),
+                TextArea::make('description')->required()->title('Description')->rows(5),
         ]),
 
         ];
@@ -75,7 +76,9 @@ class AboutAchievementsCreateScreen extends Screen
 
     public function createAboutAchievements($about_us, Request $request)
     {
-
+        $request->validate([
+            'number' => 'required|integer|max:9999',
+        ]);
         $about_achievement = [
             'number' => $request['number'],
             'addition' => $request['addition'],

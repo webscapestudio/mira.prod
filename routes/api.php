@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Projects\ProjectProgressPointsController;
 use App\Http\Controllers\Api\Projects\ProjectsController;
 use App\Http\Controllers\Api\Projects\ProjectUnitsController;
 use App\Http\Controllers\Api\Projects\ProjectUspController;
+use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\VacanciesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,7 @@ Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
 Route::apiResources([
     'general_request' => GeneralRequestsController::class,
     'resume_request' => ResumeRequestsController::class,
+    'resume_request/upload_file/' => UploadFileController::class,
     'banners' => BannersController::class,
     'achievements' => AchievementsController::class,
     'about' => AboutUsController::class,
@@ -76,5 +78,5 @@ Route::apiResources([
     'projects/{project_slug}/location' => ProjectLocationController::class,
     'projects/{project_slug}/usp' => ProjectUspController::class,
     'projects/{project_slug}/units' => ProjectUnitsController::class,
-    'projects/{project_slug}/units/{id}' => ProjectUnitsController::class,
+    'projects/{project_slug}/units/' => ProjectUnitsController::class,
 ]);

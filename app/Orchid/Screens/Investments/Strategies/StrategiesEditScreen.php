@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
@@ -64,7 +65,7 @@ class StrategiesEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('invest_strategie.title')->required()->title('Title'),
-                Input::make('invest_strategie.description')->required()->title('Description'),
+                TextArea::make('invest_strategie.description')->required()->title('Description')->rows(5),
         ])->title('Сreate Strategy'),
         ];
     }

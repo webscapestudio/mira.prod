@@ -65,7 +65,7 @@ class AdvantagesCreateScreen extends Screen
         return [
             Layout::rows([
                 Input::make('title')->required()->title('Title'),
-                TextArea::make('description')->required()->title('Description'),
+                TextArea::make('description')->required()->title('Description')->rows(5),
                 Picture::make('image_pa')->title('Image')->acceptedFiles('image/*,application/pdf,.psd'),
         ]),
         ];

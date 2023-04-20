@@ -88,7 +88,7 @@ class AboutUsEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('about_us.title')->title('Title')->type('text')->required(),
-                TextArea::make('about_us.description')->title('Description')->type('text')->required(),
+                TextArea::make('about_us.description')->title('Description')->type('text')->required()->rows(5),
                 Select::make('about_us.text_size')
                     ->options([
                         'big'   => 'Big',

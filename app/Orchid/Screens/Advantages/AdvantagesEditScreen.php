@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Picture;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
@@ -64,7 +65,7 @@ class AdvantagesEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('advantage.title')->title('Title')->type('text')->required(),
-                Input::make('advantage.description')->title('Description')->type('text')->required(),
+                TextArea::make('advantage.description')->title('Description')->type('text')->required()->rows(5),
                 Picture::make('advantage.image_desc')->title('Image (desktop)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                 Picture::make('advantage.image_mob')->title('Image (mobile)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                 Input::make('advantage.sort')->title('Sort(Number)')->type('number')->required(),
@@ -73,6 +74,9 @@ class AdvantagesEditScreen extends Screen
     }
     public function createOrUpdate(Advantages $advantage, Request $request)
     {
+        $request->validate([
+            'advantage.sort' => 'required|integer|max:9999',
+        ]);
         $advantage->fill($request->get('advantage'))->save();
         if($advantage->sortdd == null):
             $advantage->update([

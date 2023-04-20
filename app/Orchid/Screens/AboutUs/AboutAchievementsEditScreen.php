@@ -7,6 +7,7 @@ use App\Models\AboutUs;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
@@ -59,15 +60,18 @@ class AboutAchievementsEditScreen extends Screen
         return [
 
             Layout::rows([
-                Input::make('about_achievement.number')->required()->title('Title'),
-                Input::make('about_achievement.addition')->required()->title('Short Title'),
-                Input::make('about_achievement.description')->required()->title('Url'),
+                Input::make('about_achievement.number')->required()->title('Number'),
+                TextArea::make('about_achievement.addition')->required()->title('Addition')->rows(5),
+                Input::make('about_achievement.description')->required()->title('Description'),
                 Input::make('about_achievement.id')->type('hidden'),
                          ]),
         ];
     }
     public function updateAboutAchievements($about_achievement_id,$about_us_id,Request $request)
     {
+        $request->validate([
+            'about_achievement.number' => 'required|integer|max:9999',
+        ]);
         $about_achievement = AboutAchievements::find($about_achievement_id);
         $data = [
             'number' => $request->about_achievement['number'],

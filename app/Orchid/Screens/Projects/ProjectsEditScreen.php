@@ -104,7 +104,7 @@ class ProjectsEditScreen extends Screen
                 'Main Information' => [
                     Layout::rows([
                         Input::make('project.title_main')->title('Title')->type('text')->required(),
-                        TextArea::make('project.description_main')->title('Description')->required(),
+                        TextArea::make('project.description_main')->title('Description')->required()->rows(5),
                     ]),
                 ],
                 'Project' => [
@@ -112,12 +112,15 @@ class ProjectsEditScreen extends Screen
                         Input::make('project.title_first')->title('Title First')->type('text')->required(),
                         Input::make('project.title_second')->title('Title Second')->type('text')->required(),
                         Input::make('project.subtitle')->title('Subtitle')->type('text')->required(),
-                        TextArea::make('project.description')->title('Description')->required(),
+                        TextArea::make('project.description')->title('Description')->required()->rows(5),
                         Picture::make('project.image_main')->title('Image Main')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                         Picture::make('project.image_cover')->title('Image Cover')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                         Picture::make('project.image_informational')->title('Image Informational')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-                        TextArea::make('project.pictures_description')->title('Pictures Description'),
-                        Input::make('project.price')->title('Price')->type('number')->required(),
+                        TextArea::make('project.pictures_description')->title('Pictures Description')->rows(5),
+                        Input::make('project.price')->title('Price')->type('number')->required()->mask([
+                            'mask' => '999 999 999',
+                            'numericInput' => true
+                           ]),
                         Input::make('project.units_title')->title('Units Title')->type('text')->required(),
                         Input::make('project.construction_date')->title('Construction Date')->type('date')->required(),
                         CheckBox::make('project.is_announcement')->title('Announcement')->sendTrueOrFalse(),
@@ -127,7 +130,7 @@ class ProjectsEditScreen extends Screen
                 'USP' => [
                     Layout::rows([
                         Input::make('project.title_usp')->title('Title')->type('text'),
-                        TextArea::make('project.description_usp')->title('Description'),
+                        TextArea::make('project.description_usp')->title('Description')->rows(5),
                         Picture::make('project.logo_usp')->title('Logo')->acceptedFiles('image/*,application/pdf,.psd'),
                         Picture::make('project.image_first_usp')->title('Image First')->acceptedFiles('image/*,application/pdf,.psd'),
                         Picture::make('project.image_second_usp')->title('Image Second')->acceptedFiles('image/*,application/pdf,.psd'),
@@ -136,9 +139,9 @@ class ProjectsEditScreen extends Screen
                 'Location' => [
                     Layout::rows([
                         Input::make('project.address')->title('Address')->type('text'),
-                        TextArea::make('project.description_location')->title('Description'),
-                        Input::make('project.coordinates_latitude')->title('Coordinates(latitude)')->type('number'),
-                        Input::make('project.coordinates_longitude')->title('Coordinates(longitude)')->type('number'),
+                        TextArea::make('project.description_location')->title('Description')->rows(5),
+                        Input::make('project.coordinates_latitude')->title('Coordinates(latitude)')->type('text'),
+                        Input::make('project.coordinates_longitude')->title('Coordinates(longitude)')->type('text'),
                         Picture::make('project.image_location')->title('Image Location')->acceptedFiles('image/*,application/pdf,.psd'),
                     ]),
                 ],
@@ -402,6 +405,12 @@ class ProjectsEditScreen extends Screen
 //Project methods
     public function createOrUpdate(Project $project, Request $request)
     {
+        $request->validate([
+            'project.price' => 'required|integer|max:9999999999',
+            'project.coordinates_latitude' => 'required|numeric|max:90',
+            'project.coordinates_longitude' => 'required|numeric|max:180',
+        ]);
+
         $project->fill($request->get('project'))->save();
         $project->attachment()->syncWithoutDetaching(
             $request->input('project.attachment', [])

@@ -44,8 +44,8 @@ return new class extends Migration
             // location
             $table->string('address');
             $table->string('description_location');
-            $table->integer('coordinates_latitude');
-            $table->integer('coordinates_longitude');
+            $table->float('coordinates_latitude');
+            $table->float('coordinates_longitude');
             $table->string('image_location');
 
             

@@ -60,7 +60,7 @@ class ManifestoEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('manifesto.title')->title('Title')->type('text')->required(),
-                TextArea::make('manifesto.description')->title('Description')->type('text')->required(),
+                TextArea::make('manifesto.description')->title('Description')->type('text')->required()->rows(5),
                 Input::make('manifesto.image_desc_title')->title('Desktop image title')->type('text')->required(),
                 Picture::make('manifesto.image_desc')->title('Image desktop')->acceptedFiles('image/*,application/pdf,.psd')->required(),
                 Input::make('manifesto.image_mob_title')->title('Mobile image title')->type('text')->required(),

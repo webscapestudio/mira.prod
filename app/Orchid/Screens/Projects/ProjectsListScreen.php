@@ -64,6 +64,7 @@ class ProjectsListScreen extends Screen
                     }),
                 TD::make('title_first', 'Title')->sort()->filter(TD::FILTER_TEXT),
                 TD::make('title_second', 'Title')->sort()->filter(TD::FILTER_TEXT),
+                TD::make('slug', 'Slug'),
                 TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                     return $date->created_at->diffForHumans();
                 }),
