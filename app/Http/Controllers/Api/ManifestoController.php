@@ -11,6 +11,12 @@ class ManifestoController extends Controller
     public function index()
     {
         $manifesto = ManifestoResource::collection(Manifesto::get());
-        return response()->json(...$manifesto);
+        if(!$manifesto->isEmpty()):
+            return response()->json(...$manifesto);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
     }
 }

@@ -22,8 +22,8 @@ class PagesSeeder extends Seeder
                 'title' => 'Investitions',
                 'slug' => 'investitions'
             ], [
-                'title' => 'Our projects',
-                'slug' => 'our-projects'
+                'title' => 'Projects',
+                'slug' => 'Projects'
             ], [
                 'title' => 'Work with us',
                 'slug' => 'Work-with-us'
@@ -31,6 +31,10 @@ class PagesSeeder extends Seeder
             [
                 'title' => 'News',
                 'slug' => 'news'
+            ]
+            [
+                'title' => 'Vacancies',
+                'slug' => 'vacancies'
             ]
         ]);
         DB::table('investments')->insert([

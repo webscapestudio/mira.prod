@@ -11,6 +11,12 @@ class HistoryController extends Controller
     public function index()
     {
         $history = HistoryResource::collection(History::orderBy('sortdd', 'ASC')->get());
-        return response()->json($history);
+        if(!$history->isEmpty()):
+            return response()->json($history);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
     }
 }

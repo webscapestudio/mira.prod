@@ -12,6 +12,12 @@ class VacanciesController extends Controller
     public function index()
     {
         $vacancies = VacanciesResource::collection(Vacancies::orderBy('sortdd', 'ASC')->get());
-        return response()->json($vacancies);
+        if(!$vacancies->isEmpty()):
+            return response()->json($vacancies);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
     }
 }

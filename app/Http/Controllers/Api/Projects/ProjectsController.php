@@ -17,8 +17,14 @@ class ProjectsController extends Controller
     }
     public function show($slug)
     {
-        $news = ProjectResource::collection(Project::where('slug',$slug)->get());
-        return response()->json(...$news);
+        $project = ProjectResource::collection(Project::where('slug',$slug)->get());
+    if(!$project->isEmpty()):
+        return response()->json(...$project);
+    else:
+        return response()->json([
+            'massage'=>'not found',
+        ],404);
+    endif;
     }
 
 }

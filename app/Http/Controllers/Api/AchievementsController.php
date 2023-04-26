@@ -11,6 +11,13 @@ class AchievementsController extends Controller
     public function index()
     {
         $achievements = AchievementsResource::collection(Achievements::orderBy('sortdd', 'ASC')->get());
-        return response()->json($achievements);
+        if(!$achievements->isEmpty()):
+            return response()->json($achievements);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
+
     }
 }

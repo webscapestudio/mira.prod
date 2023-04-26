@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 
 class ProjectUspController extends Controller
 {
-    public function index()
+    public function index($slug)
     {
-        $usp =  ProjectUspResource::collection(Project::get());
+
+        $usp =  ProjectUspResource::collection(Project::where('slug',  $slug)->get());
+
         return response()->json(...$usp);
     }
 }

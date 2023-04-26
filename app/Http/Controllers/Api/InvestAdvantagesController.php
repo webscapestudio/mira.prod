@@ -11,6 +11,12 @@ class InvestAdvantagesController extends Controller
     public function index()
     {
         $invest_advantages =InvestAdvantagesResource::collection(InvestAdvantages::all());
-        return response()->json($invest_advantages);
+        if(!$invest_advantages->isEmpty()):
+            return response()->json($invest_advantages);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
     }
 }

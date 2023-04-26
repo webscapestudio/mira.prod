@@ -12,8 +12,6 @@ class OurProjectsController extends Controller
     public function index()
     {
         $page_projects = PageResource::collection(Pages::where('id', 3)->get());
-        return response()->json([
-            'page_projects' => $page_projects,
-        ]);
+        return response()->json(...$page_projects);
     }
 }

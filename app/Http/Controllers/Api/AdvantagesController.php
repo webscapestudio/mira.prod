@@ -11,6 +11,13 @@ class AdvantagesController extends Controller
     public function index()
     {
         $advantages = AdvantagesResource::collection(Advantages::orderBy('sortdd', 'ASC')->get());
-        return response()->json($advantages);
+        if(!$advantages->isEmpty()):
+            return response()->json($advantages);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
+
     }
 }

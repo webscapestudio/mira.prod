@@ -10,6 +10,13 @@ class AboutUsController extends Controller
     public function index()
     {
         $about_us =  AboutUsResource::collection(AboutUs::orderBy('sortdd', 'ASC')->get());
-        return response()->json($about_us);
+        if(!$about_us->isEmpty()):
+            return response()->json($about_us);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
+
     }
 }

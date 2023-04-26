@@ -12,6 +12,14 @@ class ProjectPicturesController extends Controller
     public function index($slug)
     {
         $pictures =  ProjectPicturesResource::collection(Project::where('slug', $slug)->get());
-        return response()->json($pictures);
-    }
+
+        if(!$pictures->isEmpty()):
+            return response()->json(...$pictures);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
+        }
+    
 }

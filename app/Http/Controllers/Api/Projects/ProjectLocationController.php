@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class ProjectLocationController extends Controller
 {
-    public function index()
+    public function index($slug)
     {
-        $main_info =  ProjectLocationResource::collection(Project::get());
+        $main_info =  ProjectLocationResource::collection(Project::collection(Project::where('slug',  $slug)->get());
         return response()->json(...$main_info);
     }
 }

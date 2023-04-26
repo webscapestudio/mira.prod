@@ -14,13 +14,35 @@ class ProjectUnitsController extends Controller
     public function index($project_slug)
     {  
         $project = Project::where('slug', $project_slug)->first();
-        $units =  ProjectUnitsResource::collection(ProjectUnit::orderBy('sortdd', 'ASC')->where('project_unitable_id',  $project->id)->get());
-        return response()->json($units);
+        if($project):
+            $units =  ProjectUnitsResource::collection(ProjectUnit::orderBy('sortdd', 'ASC')->where('project_unitable_id',  $project->id)->get());
+            return response()->json($units);
+            else:
+                return response()->json([
+                    'massage'=>'not found',
+                ],404);
+            endif;
     }
     public function show($slug,$id)
     {
-        $unit = ProjectUnitResource::collection(ProjectUnit::where('id',$id)->get());
-        return response()->json(...$unit);
+
+        $project = Project::where('slug', $slug)->first();
+        if($project):
+            $unit = ProjectUnitResource::collection($project->project_units()->where('id',$id)->get());
+            if(!$unit->isEmpty()):
+                return response()->json(...$unit);
+            else:
+                return response()->json([
+                    'massage'=>'not found',
+                ],404);
+            endif;
+
+            else:
+                return response()->json([
+                    'massage'=>'not found',
+                ],404);
+            endif;
+
     }
 
 }

@@ -11,6 +11,13 @@ class ContactsController extends Controller
     public function index()
     {
         $contacts =ContactsResource::collection(Contacts::get());
-        return response()->json($contacts);
+        if(!$contacts->isEmpty()):
+            return response()->json($contacts);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
+
     }
 }

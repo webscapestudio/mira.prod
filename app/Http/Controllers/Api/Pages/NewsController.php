@@ -12,9 +12,7 @@ class NewsController extends Controller
     public function index()
     {
         $page_news = PageResource::collection(Pages::where('id', 5)->get());
-        return response()->json([
-            'page_news' => $page_news,
-        ]);
+        return response()->json(...$page_news);
     }
 }
  

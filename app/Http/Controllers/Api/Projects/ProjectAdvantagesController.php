@@ -12,8 +12,15 @@ class ProjectAdvantagesController extends Controller
 {
     public function index($project_slug)
     {
+        
         $project = Project::where('slug', $project_slug)->first();
+        if($project):
         $advantages =  ProjectAdvantagesResource::collection(ProjectAdvantage::orderBy('sortdd', 'ASC')->where('project_advantageable_id',  $project->id)->get());
         return response()->json($advantages);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
     }
 }

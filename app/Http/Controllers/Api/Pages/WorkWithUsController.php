@@ -12,8 +12,6 @@ class WorkWithUsController extends Controller
     public function index()
     {
         $page_vacancies = PageResource::collection(Pages::where('id', 4)->get());
-        return response()->json([
-            'page_vacancies' => $page_vacancies,
-        ]);
+        return response()->json(...$page_vacancies);
     }
 }

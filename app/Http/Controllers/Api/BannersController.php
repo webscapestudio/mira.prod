@@ -11,6 +11,13 @@ class BannersController extends Controller
     public function index()
     {
         $banners = BannersResource::collection(Banners::orderBy('sortdd', 'ASC')->get());
-        return response()->json($banners);
+        if(!$banners->isEmpty()):
+            return response()->json($banners);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
+
     }
 }

@@ -12,8 +12,6 @@ class MainController extends Controller
     public function index()
     {
         $page_main = PageResource::collection(Pages::where('id', 1)->get());
-        return response()->json([
-            'page_investitions' => $page_main,
-        ]);
+        return response()->json(...$page_main);
     }
 }

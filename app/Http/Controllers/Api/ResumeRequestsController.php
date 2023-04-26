@@ -28,6 +28,7 @@ class ResumeRequestsController extends Controller
             'email' => 'required',
             'phone' => 'required',
             'comment' => 'nullable',
+            'department'=>'required',
             'attachment'=> 'nullable'
         ]);
         if ($validator->fails()) {
@@ -42,12 +43,13 @@ class ResumeRequestsController extends Controller
             'name' =>  $input['name'],
             'email' => $input['email'],
             'phone' => $input['phone'],
-            'comment' => $input['comment']
+            'comment' => $input['comment'],
+            'department'=> $input['department'],
         ];
   
 
       Mail::send('mails.resume_request', $res_request, function($message)use ($files) {
-            $message->to('nikita.andenko@yandex.ru')
+            $message->to(env('MAIL_TO_ADDRESS'))                                                  //почта
                     ->subject('Resume Request Email'); 
                     foreach ($files as $file){
                         $message->attach($file);

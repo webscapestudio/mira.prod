@@ -31,7 +31,7 @@ return [
     |            "postmark", "log", "array", "failover"
     |
     */
-
+    'driver' => 'sendmail',
     "mailers" => [
         "smtp" => [
             "transport" => "smtp",

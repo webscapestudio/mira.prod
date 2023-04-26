@@ -38,7 +38,7 @@ class GeneralRequestsController extends Controller
         ];
         
         Mail::send('mails.general_request', $gen_request, function($message)use($gen_request) {
-            $message->to('nikita.andenko@yandex.ru')
+            $message->to(env('MAIL_TO_ADDRESS'))                                            //почта
                     ->subject('General Request Email');          
         });
 

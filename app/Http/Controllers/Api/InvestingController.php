@@ -11,6 +11,12 @@ class InvestingController extends Controller
     public function index()
     {
         $investing = InvestmentResource::collection(Investment::get());
-        return response()->json(...$investing);
+        if(!$investing->isEmpty()):
+            return response()->json(...$investing);
+        else:
+            return response()->json([
+                'massage'=>'not found',
+            ],404);
+        endif;
     }
 }

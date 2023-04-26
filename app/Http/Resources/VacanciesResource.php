@@ -16,7 +16,7 @@ class VacanciesResource extends JsonResource
     {
         return [
             "title"=>$this->title,
-            "content"=>$this->content,
+            "contents"=>$this->content,
             "picture"=>$this->image_desc
         ];
     }
