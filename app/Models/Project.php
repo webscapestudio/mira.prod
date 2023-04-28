@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Orchid\Attachment\Attachable;
@@ -11,12 +10,9 @@ use Orchid\Screen\AsSource;
 
 class Project extends Model
 {
-    use HasFactory, AsSource,Attachable,Sluggable, Filterable;
+    use HasFactory, AsSource,Attachable, Filterable;
 
     protected $fillable = [
-        //main_information
-        'title_main',
-        'description_main',
         //project
         'slug',
         'title_first',
@@ -26,6 +22,7 @@ class Project extends Model
         'image_main',
         'image_cover',
         'image_informational',
+        'image_preview',
         'pictures_description',
         'price',
         'units_title',
@@ -37,6 +34,7 @@ class Project extends Model
         //usp
         'title_usp',
         'description_usp',
+        'logo_usp',
         'image_first_usp',
         'image_second_usp',
          // location
@@ -53,11 +51,6 @@ class Project extends Model
     ];
     protected $allowedFilters = ['title_first','title_second'];
 
-    public function sluggable(): array
-    {
-        return ['slug' => ['source' => 'title_first']];
-    }
-
     public function project_units()
     {
         return $this->morphMany(ProjectUnit::class, 'project_unitable');
@@ -69,5 +62,9 @@ class Project extends Model
     public function project_advantages()
     {
         return $this->morphMany(ProjectAdvantage::class, 'project_advantageable');
+    }
+    public function project_mains()
+    {
+        return $this->morphMany(ProjectMain::class, 'project_mainable');
     }
 }

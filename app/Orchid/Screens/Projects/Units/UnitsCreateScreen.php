@@ -93,9 +93,9 @@ class UnitsCreateScreen extends Screen
     {
         $request->validate([
             'price' => 'required|numeric|max:9999999999',
-            'floor' => 'required|numeric|max:999',
-            'view' => 'required|numeric|max:9999999999',
-            'area' => 'required|numeric|max:9999999999',
+            'floor' => 'required|numeric|max:9999999999',
+            'view' => 'required|numeric',
+            'area' => 'required|numeric',
         ]);
         $data = [
             'address' => $request['address'],

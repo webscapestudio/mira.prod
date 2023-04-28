@@ -15,7 +15,7 @@ class HistoryController extends Controller
             return response()->json($history);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
     }

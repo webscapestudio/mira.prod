@@ -32,6 +32,8 @@ use App\Orchid\Screens\PagesScreen;
 use App\Orchid\Screens\Partners\PartnersEditScreen;
 use App\Orchid\Screens\Partners\PartnersListScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\Projects\Mains\ProjectMainEditScreen;
+use App\Orchid\Screens\Projects\Mains\ProjectMainCreateScreen;
 use App\Orchid\Screens\Projects\Advantages\AdvantagesCreateScreen as ProjectsAdvantagesAdvantagesCreateScreen;
 use App\Orchid\Screens\Projects\Advantages\AdvantagesEditScreen as ProjectsAdvantagesAdvantagesEditScreen;
 use App\Orchid\Screens\Projects\ProgressPoints\PointCreateScreen;
@@ -353,6 +355,18 @@ Route::screen('resume_requests', ResumeRequestsListScreen::class)->name('platfor
                 ->name('platform.project_unit.create')
                 ->breadcrumbs(
                     fn (Trail $trail) => $trail->parent('platform.project.list')->push('Unit Create')
+                );
+        });
+        Route::group(['prefix' => '/{id}'], function () {
+            Route::screen('project_main/{id_project}/edit',ProjectMainEditScreen::class)
+                ->name('platform.project_main.edit')
+                ->breadcrumbs(
+                    fn (Trail $trail) => $trail->parent('platform.project.list')->push('Main Information Edit')
+                );
+            Route::screen('project_main/create', ProjectMainCreateScreen::class)
+                ->name('platform.project_main.create')
+                ->breadcrumbs(
+                    fn (Trail $trail) => $trail->parent('platform.project.list')->push('Main Information Create')
                 );
         });
     });

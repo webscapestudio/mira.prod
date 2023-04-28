@@ -16,7 +16,7 @@ class VacanciesController extends Controller
             return response()->json($vacancies);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
     }

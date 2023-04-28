@@ -25,7 +25,8 @@ class ProjectsResource extends JsonResource
             "pictures" => [
                 "main" => $this->image_main,
                 "cover" => $this->image_cover,
-                "informational" => $this->image_informational
+                "informational" => $this->image_informational,
+                "preview"=>$this->image_preview
             ],
             "pictures_description" => $this->pictures_description,
             "price" => $this->price,

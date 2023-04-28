@@ -15,7 +15,7 @@ class InvestAdvantagesController extends Controller
             return response()->json($invest_advantages);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
     }

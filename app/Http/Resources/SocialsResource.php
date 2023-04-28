@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SocialResource extends JsonResource
+class SocialsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,10 @@ class SocialResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "title"=> $this->title,
+            "short_title"=> $this->short_title,
+			"url"=> $this->url
+        ];
     }
 }

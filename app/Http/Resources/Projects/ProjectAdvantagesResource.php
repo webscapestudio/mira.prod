@@ -17,7 +17,7 @@ class ProjectAdvantagesResource extends JsonResource
         return     [
             "title" => $this->title,
             "description" => $this->description,
-            "picture" => $this->picture,
+            "picture" => $this->image_pa,
         ];
     }
 }

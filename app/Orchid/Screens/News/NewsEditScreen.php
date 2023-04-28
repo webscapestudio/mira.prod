@@ -13,7 +13,7 @@ use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
-
+use Orchid\Screen\Fields\DateTimer;
 class NewsEditScreen extends Screen
 {
     /** 
@@ -63,22 +63,20 @@ class NewsEditScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [
-            Layout::rows([
-                Input::make('new.title')->title('Title')->type('text')->required(),
-                Quill::make('new.content')->title('Content')->required(),
-                Picture::make('new.image_desc')->title('Image')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-            ])
-        ];
+            return [
+                Layout::rows([
+                    Input::make('new.title')->title('Title')->type('text')->required(),
+                    Quill::make('new.content')->title('Content')->required(),
+                    Picture::make('new.image_desc')->title('Image')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                    DateTimer::make('new.created_at')->title('Date')->allowInput()->required(),
+                ])
+            ];
     }
     public function createOrUpdate(News $new, Request $request)
     {
+
         $new->fill($request->get('new'))->save();
-        if($new->sortdd == null):
-        $new->update([
-            'sortdd'=>$new->id
-        ]);
-        endif;
+
         Toast::info(__('Successfully saved'));
         return redirect()->route('platform.news.list');
     }

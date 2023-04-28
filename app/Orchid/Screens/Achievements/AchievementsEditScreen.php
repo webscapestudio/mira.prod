@@ -74,7 +74,7 @@ class AchievementsEditScreen extends Screen
     public function createOrUpdate(Achievements $achievement, Request $request)
     {
         $request->validate([
-            'achievement.number' => 'required|integer|max:9999',
+            'achievement.number' => 'required|integer',
         ]);
         $achievement->fill($request->get('achievement'))->save();
         if($achievement->sortdd == null):

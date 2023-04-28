@@ -1,35 +1,30 @@
 <?php
 
-namespace App\Orchid\Screens\Projects\Advantages;
+namespace App\Orchid\Screens\Projects\Mains;
 
+use Orchid\Screen\Screen;
+use App\Models\ProjectMain;
 use App\Models\Project;
-use App\Models\ProjectAdvantage;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Picture;
 use Orchid\Screen\Fields\TextArea;
-use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
-class AdvantagesCreateScreen extends Screen
+class ProjectMainCreateScreen extends Screen
 {
-       /**
-     * @var AboutUs
-     */
-    public $project;
     /**
      * Fetch data to be displayed on the screen.
      *
      * @return array
-     */
+     */ 
     public function query(Project $project): iterable
     {
         return [
             'project' => $project,
         ];
-    }  
+    }
 
     /**
      * The name of the screen displayed in the header.
@@ -51,7 +46,7 @@ class AdvantagesCreateScreen extends Screen
         return [
             Button::make(__('Save'))
             ->icon('check')
-            ->method('createProjectAdvantage'),
+            ->method('createProjectMain'),
         ];
     }
 
@@ -64,26 +59,24 @@ class AdvantagesCreateScreen extends Screen
     {
         return [
             Layout::rows([
-                Input::make('title')->required()->title('Title'),
-                TextArea::make('description')->required()->title('Description')->rows(5),
-                Picture::make('image_pa')->title('Image')->acceptedFiles('image/*,application/pdf,.psd'),
-        ]),
+                Input::make('title_main')->title('Title')->type('text')->required(),
+                TextArea::make('description_main')->title('Description')->required()->rows(5),
+            ]),
         ];
     }
-    public function createProjectAdvantage($project, Request $request)
+    public function createProjectMain($project, Request $request)
     {
 
         $data = [
-            'title' => $request['title'],
-            'description' => $request['description'],
-            'image_pa' => $request['image_pa']
+            'title_main' => $request['title_main'],
+            'description_main' => $request['description_main'],
         ];
         $project = Project::find($project);
-        $project->project_advantages()->create($data)->save();
-        $project_advantage = ProjectAdvantage::orderby('id', 'desc')->first();
-        if ($project_advantage->sortdd == null) :
-            $project_advantage->update([
-                'sortdd' => $project_advantage->id
+        $project->project_mains()->create($data)->save();
+        $project_main = ProjectMain::orderby('id', 'desc')->first();
+        if ($project_main->sortdd == null) :
+            $project_main->update([
+                'sortdd' => $project_main->id
             ]);
         endif;
         Toast::info(__('Successfully saved'));

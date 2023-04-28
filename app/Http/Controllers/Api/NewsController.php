@@ -12,12 +12,12 @@ class NewsController extends Controller
     
     public function index()
     {
-        $news = NewsResource::collection(News::orderBy('sortdd', 'ASC')->paginate(10));
+        $news = NewsResource::collection(News::orderBy('created_at', 'DESC')->paginate(4));
         if(!$news->isEmpty()):
             return response()->json($news->response()->getData(true));
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
     }
@@ -28,7 +28,7 @@ class NewsController extends Controller
             return response()->json(...$news);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
     }

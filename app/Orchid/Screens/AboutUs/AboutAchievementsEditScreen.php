@@ -61,8 +61,8 @@ class AboutAchievementsEditScreen extends Screen
 
             Layout::rows([
                 Input::make('about_achievement.number')->required()->title('Number'),
-                TextArea::make('about_achievement.addition')->required()->title('Addition')->rows(5),
-                Input::make('about_achievement.description')->required()->title('Description'),
+                Input::make('about_achievement.addition')->required()->title('Addition')->rows(5),
+                TextArea::make('about_achievement.description')->required()->title('Description'),
                 Input::make('about_achievement.id')->type('hidden'),
                          ]),
         ];
@@ -70,7 +70,7 @@ class AboutAchievementsEditScreen extends Screen
     public function updateAboutAchievements($about_achievement_id,$about_us_id,Request $request)
     {
         $request->validate([
-            'about_achievement.number' => 'required|integer|max:9999',
+            'about_achievement.number' => 'required|integer',
         ]);
         $about_achievement = AboutAchievements::find($about_achievement_id);
         $data = [

@@ -62,7 +62,6 @@ class AdvantagesList extends Screen
                         return "<img  class='mw-80 d-block img-fluid rounded-1 w-80' src='$advantage->image_desc' />";
                     }),
                 TD::make('title', 'Title')->width('180px')->sort()->filter(TD::FILTER_TEXT),
-                TD::make('sort', 'Order')->align(TD::ALIGN_CENTER)->width('100px'),
                 TD::make('description', 'Description')->width('grow')->sort(),
                 TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                     return $date->created_at->diffForHumans();

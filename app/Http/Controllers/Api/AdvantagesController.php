@@ -15,7 +15,7 @@ class AdvantagesController extends Controller
             return response()->json($advantages);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
 

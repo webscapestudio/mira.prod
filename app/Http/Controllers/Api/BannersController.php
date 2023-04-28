@@ -15,7 +15,7 @@ class BannersController extends Controller
             return response()->json($banners);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
 

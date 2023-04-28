@@ -77,7 +77,7 @@ class AboutAchievementsCreateScreen extends Screen
     public function createAboutAchievements($about_us, Request $request)
     {
         $request->validate([
-            'number' => 'required|integer|max:9999',
+            'number' => 'required|integer',
         ]);
         $about_achievement = [
             'number' => $request['number'],

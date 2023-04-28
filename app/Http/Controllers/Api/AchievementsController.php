@@ -15,7 +15,7 @@ class AchievementsController extends Controller
             return response()->json($achievements);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
 

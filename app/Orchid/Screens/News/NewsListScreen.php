@@ -64,7 +64,7 @@ class NewsListScreen extends Screen
                     }),
                 TD::make('title', 'Title')->sort()->filter(TD::FILTER_TEXT),
                 TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
-                    return $date->created_at->diffForHumans();
+                    return date('d.m.Y', strtotime( $date->created_at));
                 }),
                 TD::make(__('Actions'))
                     ->align(TD::ALIGN_CENTER)
@@ -83,16 +83,6 @@ class NewsListScreen extends Screen
                                 ->method('remove', [
                                     'id' => $new->id,
                                 ]),
-                            Button::make(__('Up'))
-                                ->icon('arrow-up')
-                                ->method('up_position', [
-                                    'id' => $new->id,
-                                ]),
-                            Button::make(__('Down'))
-                                ->icon('arrow-down')
-                                ->method('down_position', [
-                                    'id' => $new->id,
-                                ]),
                         ])),
             ])
         ];
@@ -102,41 +92,5 @@ class NewsListScreen extends Screen
         News::findOrFail($request->get('id'))->delete();
         Toast::info(__('Successfully removed'));
     }
-    public function up_position($id): void
-    {
-        $news_all = News::orderBy('sortdd', 'ASC')->get();
-        $news = News::find($id);
-        $prev_news = News::where('sortdd', '<', $news->sortdd)
-            ->latest('sortdd')
-            ->first();
 
-        if ($news_all->first() == $news) :
-            Toast::error(__('Position is first'));
-        else :
-            $difference = $news->sortdd - $prev_news->sortdd;
-
-            $prev_news->update(['sortdd'=>$prev_news->sortdd + $difference]);
-            $news->update(['sortdd'=>$news->sortdd - $difference]);
-            Toast::info(__('Successfully'));
-        endif;
-
-    }
-    public function down_position($id): void
-    {
-        $news_all = News::orderBy('sortdd', 'ASC')->get();
-        $news = News::find($id);
-        $next_news = News::where('sortdd', '>', $news->sortdd)
-            ->oldest('sortdd')
-            ->first();
-
-        if ($news_all->last() == $news) :
-            Toast::error(__('Position is latest'));
-        else :
-            $difference =$next_news->sortdd - $news->sortdd;
-
-            $next_news->update(['sortdd'=>$next_news->sortdd - $difference]);
-            $news->update(['sortdd'=>$news->sortdd + $difference]);
-            Toast::info(__('Successfully'));
-        endif;
-    }
 }

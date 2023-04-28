@@ -11,15 +11,39 @@ use Illuminate\Http\Request;
 
 class ProjectUnitsController extends Controller
 {
-    public function index($project_slug)
+    public function index($project_slug,Request $request)
     {  
+
         $project = Project::where('slug', $project_slug)->first();
         if($project):
             $units =  ProjectUnitsResource::collection(ProjectUnit::orderBy('sortdd', 'ASC')->where('project_unitable_id',  $project->id)->get());
+            if ($search_type = $request->type and $search_bedrooms_quantity= $request->bedrooms_quantity) :
+                $units = ProjectUnitsResource::collection(ProjectUnit::query()
+                    ->where('type', 'LIKE', "%{$search_type}%")
+                    ->where('bedrooms_quantity', 'LIKE', "%{$search_bedrooms_quantity}%")
+                    ->where('project_unitable_id',  $project->id)
+                    ->get());
+                    return response()->json($units);
+            endif;
+            if ($search = $request->type) :
+                $units = ProjectUnitsResource::collection(ProjectUnit::query()
+                    ->where('type', 'LIKE', "%{$search}%")
+                    ->where('project_unitable_id',  $project->id)
+                    ->get());
+                    return response()->json($units);
+            endif;
+            if ($search = $request->bedrooms_quantity) :
+                $units = ProjectUnitsResource::collection(ProjectUnit::query()
+                    ->where('bedrooms_quantity', 'LIKE', "%{$search}%")
+                    ->where('project_unitable_id',  $project->id)
+                    ->get());
+                    return response()->json($units);
+            endif;
+
             return response()->json($units);
             else:
                 return response()->json([
-                    'massage'=>'not found',
+                    'error'=>'not found',
                 ],404);
             endif;
     }
@@ -33,13 +57,13 @@ class ProjectUnitsController extends Controller
                 return response()->json(...$unit);
             else:
                 return response()->json([
-                    'massage'=>'not found',
+                    'error'=>'not found',
                 ],404);
             endif;
 
             else:
                 return response()->json([
-                    'massage'=>'not found',
+                    'error'=>'not found',
                 ],404);
             endif;
 

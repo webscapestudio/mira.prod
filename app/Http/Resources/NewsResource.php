@@ -23,9 +23,9 @@ class NewsResource extends JsonResource
         return [
             "slug"=>$this->slug,
             "title"=> $this->title,
-            "contents"=> $this->contents,
+            "contents"=> $this->content,
             "picture"=> $this->image_desc,
-            "date"=> $this->created_at,
+            "date"=> date('d.m.Y', strtotime( $this->created_at)),
             "is_last"=> $is_last
         ];
     }

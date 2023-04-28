@@ -15,7 +15,7 @@ class ContactsResource extends JsonResource
      */
     public function toArray($request)
     {
-        $socials=Social::all();
+        $socials=SocialsResource::collection(Social::all());
         return [
             "address"=>$this->address,
             "email"=>$this->email,

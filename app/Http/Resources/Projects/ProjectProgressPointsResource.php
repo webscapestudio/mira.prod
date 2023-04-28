@@ -15,7 +15,7 @@ class ProjectProgressPointsResource extends JsonResource
     public function toArray($request)
     {
         return     [
-            "date" => $this->date,
+            "date" =>date('d.m.Y', strtotime($this->date)),
             "title" => $this->title,
             "description" => $this->description,
             "pictures" => [

@@ -15,7 +15,7 @@ class ManifestoController extends Controller
             return response()->json(...$manifesto);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
     }

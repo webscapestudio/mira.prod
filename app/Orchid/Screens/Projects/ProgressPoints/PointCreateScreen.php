@@ -11,7 +11,7 @@ use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
-
+use App\Models\ProjectProgressPoint;
 class PointCreateScreen extends Screen
 {
            /**
@@ -76,7 +76,7 @@ class PointCreateScreen extends Screen
     public function createProgressPoint($project, Request $request)
     {
 
-        $project_progress_points = [
+        $data = [
             'date' => $request['date'],
             'title' => $request['title'],
             'description' => $request['description'],
@@ -87,7 +87,13 @@ class PointCreateScreen extends Screen
 
         ];
         $project = Project::find($project);
-        $project->project_progress_points()->create($project_progress_points)->save();
+        $project->project_progress_points()->create($data)->save();
+        $project_progress_points = ProjectProgressPoint::orderby('id', 'desc')->first();
+        if ($project_progress_points->sortdd == null) :
+            $project_progress_points->update([
+                'sortdd' => $project_progress_points->id
+            ]);
+        endif;
         Toast::info(__('Successfully saved'));
         return redirect()->route('platform.project.edit', $project->id);
     }

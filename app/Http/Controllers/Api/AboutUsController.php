@@ -14,7 +14,7 @@ class AboutUsController extends Controller
             return response()->json($about_us);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
 

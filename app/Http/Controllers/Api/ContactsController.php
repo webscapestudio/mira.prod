@@ -12,10 +12,10 @@ class ContactsController extends Controller
     {
         $contacts =ContactsResource::collection(Contacts::get());
         if(!$contacts->isEmpty()):
-            return response()->json($contacts);
+            return response()->json(...$contacts);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
 

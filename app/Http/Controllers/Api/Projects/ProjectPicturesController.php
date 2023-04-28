@@ -17,7 +17,7 @@ class ProjectPicturesController extends Controller
             return response()->json(...$pictures);
         else:
             return response()->json([
-                'massage'=>'not found',
+                'error'=>'not found',
             ],404);
         endif;
         }
