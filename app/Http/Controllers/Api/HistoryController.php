@@ -10,7 +10,7 @@ class HistoryController extends Controller
 {
     public function index()
     {
-        $history = HistoryResource::collection(History::orderBy('sortdd', 'ASC')->get());
+        $history = HistoryResource::collection(History::orderBy('year', 'ASC')->get());
         if(!$history->isEmpty()):
             return response()->json($history);
         else:

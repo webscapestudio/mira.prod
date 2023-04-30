@@ -51,6 +51,8 @@ class ResumeRequestEmail extends Mailable
                 'email' => $this->request->email,
                 'phone' =>$this->request->phone,
                 'comment' => $this->request->comment,
+                'department'=> $this->request->department,
+                'attachment' => $this->request->attachment
             ],
         );
     }

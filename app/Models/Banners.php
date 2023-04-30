@@ -19,4 +19,9 @@ class Banners extends Model
         'title_second'
     ];
     protected $allowedFilters = ['title_first'];
+    public function project()
+    {
+        return $this->morphToMany(Project::class, 'projectable');
+    }
+
 }

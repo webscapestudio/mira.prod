@@ -67,4 +67,8 @@ class Project extends Model
     {
         return $this->morphMany(ProjectMain::class, 'project_mainable');
     }
+    public function banners()
+    {
+        return $this->morphedByMany(Banners::class, 'projectable');
+    }
 }

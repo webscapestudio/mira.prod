@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Models\Project;
 class BannersResource extends JsonResource
 {
     /**
@@ -14,6 +14,9 @@ class BannersResource extends JsonResource
      */
     public function toArray($request)
     {
+        $project = Project::find($this->project);
+
+
         return [
             "id"=>$this->id,
             "title" => [
@@ -24,7 +27,7 @@ class BannersResource extends JsonResource
                 "desktop"=> $this->image_desc,
                 "mobile"=> $this->image_mob
         ],
-        "project"=>$this->project, 
+        "project"=>$project->slug, 
         ];
     }
 }

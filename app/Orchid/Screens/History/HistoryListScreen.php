@@ -81,16 +81,7 @@ class HistoryListScreen extends Screen
                                 ->method('delete', [
                                     'id' => $history->id,
                                 ]),
-                                Button::make(__('Up'))
-                                ->icon('arrow-up')
-                                ->method('up_position', [
-                                    'id' => $history->id,
-                                ]),
-                            Button::make(__('Down'))
-                                ->icon('arrow-down')
-                                ->method('down_position', [
-                                    'id' => $history->id,
-                                ]),
+
                         ])),
             ])
         ];
@@ -103,41 +94,4 @@ class HistoryListScreen extends Screen
     }
 
 
-    public function up_position($id): void
-    {
-        $history_all = History::orderBy('sortdd', 'ASC')->get();
-        $history = History::find($id);
-        $prev_history = History::where('sortdd', '<', $history->sortdd)
-            ->latest('sortdd')
-            ->first();
-
-        if ($history_all->first() == $history) :
-            Toast::error(__('Position is first'));
-        else :
-            $difference = $history->sortdd - $prev_history->sortdd;
-
-            $prev_history->update(['sortdd'=>$prev_history->sortdd + $difference]);
-            $history->update(['sortdd'=>$history->sortdd - $difference]);
-            Toast::info(__('Successfully'));
-        endif;
-
-    }
-    public function down_position($id): void
-    {
-        $history_all = History::orderBy('sortdd', 'ASC')->get();
-        $history = History::find($id);
-        $next_history = History::where('sortdd', '>', $history->sortdd)
-            ->oldest('sortdd')
-            ->first();
-
-        if ($history_all->last() == $history) :
-            Toast::error(__('Position is latest'));
-        else :
-            $difference =$next_history->sortdd - $history->sortdd;
-
-            $next_history->update(['sortdd'=>$next_history->sortdd - $difference]);
-            $history->update(['sortdd'=>$history->sortdd + $difference]);
-            Toast::info(__('Successfully'));
-        endif;
-    }
 }

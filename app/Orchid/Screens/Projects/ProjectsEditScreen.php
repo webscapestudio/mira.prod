@@ -141,11 +141,11 @@ class ProjectsEditScreen extends Screen
                 ],
                 'Location' => [
                     Layout::rows([
-                        Input::make('project.address')->title('Address')->type('text'),
-                        TextArea::make('project.description_location')->title('Description')->rows(5),
-                        Input::make('project.coordinates_latitude')->title('Coordinates(latitude)')->type('text'),
-                        Input::make('project.coordinates_longitude')->title('Coordinates(longitude)')->type('text'),
-                        Picture::make('project.image_location')->title('Image Location')->acceptedFiles('image/*,application/pdf,.psd'),
+                        Input::make('project.address')->title('Address')->type('text')->required(),
+                        TextArea::make('project.description_location')->title('Description')->rows(5)->required(),
+                        Input::make('project.coordinates_latitude')->title('Coordinates(latitude)')->type('text')->required(),
+                        Input::make('project.coordinates_longitude')->title('Coordinates(longitude)')->type('text')->required(),
+                        Picture::make('project.image_location')->title('Image Location')->acceptedFiles('image/*,application/pdf,.psd')->required(),
                     ]),
                 ],
                 'Pictures' => [
@@ -219,16 +219,7 @@ class ProjectsEditScreen extends Screen
                                         ->method('deletePoint', [
                                             'id' => $point->id,
                                         ]),
-                                        Button::make(__('Up'))
-                                        ->icon('arrow-up')
-                                        ->method('up_position_point', [
-                                            'id' => $point->id,
-                                        ]),
-                                    Button::make(__('Down'))
-                                        ->icon('arrow-down')
-                                        ->method('down_position_point', [
-                                            'id' => $point->id,
-                                        ]),
+
                                 ])),
                     ]),
                 ],
@@ -364,43 +355,8 @@ public function down_position_project_main(Request $request): void
         ProjectProgressPoint::findOrFail($request->get('id'))->delete();
         Toast::info('Successfully deleted');
     }
-    public function up_position_point(Request $request): void
-    {
-        $point_all = ProjectProgressPoint::orderBy('sortdd', 'ASC')->get();
-        $point = ProjectProgressPoint::findOrFail($request->get('id'));
-        $prev_point = ProjectProgressPoint::where('sortdd', '<', $point->sortdd)
-            ->latest('sortdd')
-            ->first();
+   
 
-        if ($point_all->first() == $point) :
-            Toast::error(__('Position is first'));
-        else :
-            $difference = $point->sortdd - $prev_point->sortdd;
-
-            $prev_point->update(['sortdd'=>$prev_point->sortdd + $difference]);
-            $point->update(['sortdd'=>$point->sortdd - $difference]);
-            Toast::info(__('Successfully'));
-        endif;
-
-    }
-    public function down_position_point(Request $request): void
-    {
-        $point_all = ProjectProgressPoint::orderBy('sortdd', 'ASC')->get();
-        $point = ProjectProgressPoint::findOrFail($request->get('id'));
-        $next_point = ProjectProgressPoint::where('sortdd', '>', $point->sortdd)
-            ->oldest('sortdd')
-            ->first();
-
-        if ($point_all->last() == $point) :
-            Toast::error(__('Position is latest'));
-        else :
-            $difference =$next_point->sortdd - $point->sortdd;
-
-            $next_point->update(['sortdd'=>$next_point->sortdd - $difference]);
-            $point->update(['sortdd'=>$point->sortdd + $difference]);
-            Toast::info(__('Successfully'));
-        endif;
-    }
 //Advantage methods
     public function deleteAdvantage(Request $request): void
     {

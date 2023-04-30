@@ -4,8 +4,10 @@ namespace App\Orchid\Screens\Banners;
 
 use App\Models\Banners;
 use App\Models\User;
+use App\Models\Project;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Orchid\Screen\Fields\Picture;
@@ -71,12 +73,9 @@ class BannersEdit extends Screen
                     ->type('text')
                     ->required(),
                 Input::make('banner.title_second')->title('Title second')->type('text')->required(),
+                Select::make('banner.project')->fromModel(Project::class, 'slug')->title('Project')->required(),
                 Picture::make('banner.image_desc')->title('Image (desktop)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                 Picture::make('banner.image_mob')->title('Image (mobile)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-                Input::make('banner.project')
-                ->title('Project') 
-                ->type('text')
-                ->required(),
             ])
         ];
     }
