@@ -44,32 +44,50 @@ class GeneralRequestsController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()]);
         }
+
         $gen_request = [
             'name' => $input['name'],
             'phone' => $input['phone'],
         ];
 
-        $amoCRM_request = $gen_request + [
-                'email' => $input['email'],
-                'name_form' => $input['name_form'],
-                'id_form' => $input['id_form'],
-                'comment' => $input['comment'],
-                'geoip' => geoip($request->ip()),
-                'domain' => $input['domain'],
-                'utm_source' => $input['utm_source'] ?? env('UTM_SOURCE'),
-                'utm_medium' => $input['utm_medium'] ?? env('UTM_MEDIUM'),
-                'utm_term' => $input['utm_term'] ?? env('UTM_TERM'),
-                'utm_content' => $input['utm_content'] ?? env('UTM_CONTENT'),
-                'utm_campaign' => $input['utm_campaign'] ?? env('UTM_CAMPAIGN'),
-            ];
+        $amoCRM_request = [
+            'add' => [
+                [
+                    'name' => $input['name'],
+                    'phone' => $input['phone'],
+                    'email' => $input['email'],
+                    'name_form' => $input['name_form'],
+                    'id_form' => $input['id_form'],
+                    'comment' => $input['comment'],
+                    'domain' => $input['domain'],
+                ]
+            ]];
 
         try {
+            $dataToken = file_get_contents("tokens.txt");
+            if (!$dataToken) {
+                $this->baseAuth();
+            }
+
+            $dataToken = file_get_contents("tokens.txt");
+            $dataToken = json_decode($dataToken, true);
+
+            if ($dataToken["endTokenTime"] - 60 < time()) {
+                $access_token = $this->refreshTokenAuth($dataToken["refresh_token"]);
+            } else {
+                $access_token = $dataToken["access_token"];
+            }
+
             $response = Http::withOptions([
-                'verify' => false
+                'verify' => false,
+            ])->withHeaders([
+                'Authorization: Bearer ' . $access_token,
             ])
-                ->post(env('AMO_CRM_URL'), $amoCRM_request);
+                ->post('https://dianovjs.amocrm.ru/api/v2/leads', $amoCRM_request);
+
 
             if ($response->failed()) {
+                dd($response->body());
                 return response()->json([
                     "success" => false,
                     "message" => "Request not sent"
@@ -81,6 +99,7 @@ class GeneralRequestsController extends Controller
                 ->subject('General Request Email');
             });
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return response()->json([
                 "success" => false,
                 "message" => "Request not sent"
@@ -92,6 +111,92 @@ class GeneralRequestsController extends Controller
             "success" => true,
             "message" => "Request sent"
         ]);
+    }
+
+    private function baseAuth(): void
+    {
+        $response = Http::withOptions([
+            'verify' => false,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+        ])
+            ->post(env('AMO_CRM_URL') . "oauth2/access_token", [
+                'client_id' => env('AMO_CRM_CLIENT_ID'),
+                'client_secret' => env('AMO_CRM_CLIENT_SECRET'),
+                'grant_type' => 'authorization_code',
+                'code' => env('AMO_CRM_CODE'),
+                'redirect_uri' => env('AMO_CRM_REDIRECT_URI'),
+            ]);
+
+        if ($response->failed()) {
+            dd($response->body());
+            response()->json([
+                "success" => false,
+                "message" => "Request not sent"
+            ]);
+            return;
+        }
+
+        $response = json_decode($response->body(), true);
+
+        $arrParamsAmo = [
+            "access_token"  => $response['access_token'],
+            "refresh_token" => $response['refresh_token'],
+            "token_type"    => $response['token_type'],
+            "expires_in"    => $response['expires_in'],
+            "endTokenTime"  => $response['expires_in'] + time(),
+        ];
+
+        $arrParamsAmo = json_encode($arrParamsAmo);
+
+        $f = fopen("tokens.txt", 'w');
+        fwrite($f, $arrParamsAmo);
+        fclose($f);
+    }
+
+    private function refreshTokenAuth(string $refresh_token): string
+    {
+        $response = Http::withOptions([
+            'verify' => false,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+        ])
+            ->post(env('AMO_CRM_URL') . "oauth2/access_token", [
+                'client_id' => env('AMO_CRM_CLIENT_ID'),
+                'client_secret' => env('AMO_CRM_CLIENT_SECRET'),
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $refresh_token,
+                'redirect_uri' => env('AMO_CRM_REDIRECT_URI'),
+            ]);
+
+        if ($response->failed()) {
+            return response()->json([
+                "success" => false,
+                "message" => "Request not sent"
+            ]);
+        }
+
+        $response = json_decode($response->body(), true);
+
+        $arrParamsAmo = [
+            "access_token"  => $response['access_token'],
+            "refresh_token" => $response['refresh_token'],
+            "token_type"    => $response['token_type'],
+            "expires_in"    => $response['expires_in'],
+            "endTokenTime"  => $response['expires_in'] + time(),
+        ];
+
+        $arrParamsAmo = json_encode($arrParamsAmo);
+
+        $f = fopen("tokens.txt", 'w');
+        fwrite($f, $arrParamsAmo);
+        fclose($f);
+
+        return $response['access_token'];
     }
 
 //-----------------------------------------------------------------------------------------------------------------------
