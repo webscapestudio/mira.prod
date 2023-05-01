@@ -82,7 +82,7 @@ class GeneralRequestsController extends Controller
             ])->withHeaders([
                 'Authorization: Bearer ' . $access_token,
             ])
-                ->post('https://dianovjs.amocrm.ru/api/v3/leads', $amoCRM_request);
+                ->post('https://dianovjs.amocrm.ru/api/v2/leads', $amoCRM_request);
 
 
             if ($response->failed()) {
