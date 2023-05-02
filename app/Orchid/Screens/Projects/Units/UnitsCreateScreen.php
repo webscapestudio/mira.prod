@@ -80,7 +80,7 @@ class UnitsCreateScreen extends Screen
                 Input::make('series')->title('Series')->type('text'),
                 Input::make('price')->title('Price')->type('number')->required(),
                 Input::make('area')->title('Area')->type('text')->required(),
-                Input::make('bedrooms_quantity')->title('bedrooms(quantity)')->type('text'),
+                Input::make('bedrooms_quantity')->title('bedrooms(quantity)')->type('text')->required(),
                 Input::make('bathrooms_quantity')->title('bathrooms(quantity)')->type('text')->required(),
                 Input::make('floor')->title('Floor')->type('number'),
                 Input::make('view')->title('View')->type('text'),
@@ -93,8 +93,7 @@ class UnitsCreateScreen extends Screen
     {
         $request->validate([
             'price' => 'required|numeric|max:9999999999',
-            'floor' => 'required|numeric|max:9999999999',
-            'view' => 'required|numeric',
+            'floor' => 'nullable|numeric|max:9999999999',
             'area' => 'required|numeric',
         ]);
         $data = [

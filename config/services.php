@@ -28,4 +28,12 @@ return [
         "secret" => env("AWS_SECRET_ACCESS_KEY"),
         "region" => env("AWS_DEFAULT_REGION", "us-east-1"),
     ],
+
+    "ammo_crm" => [
+        'url' => env('AMO_CRM_URL'),
+        'client_id' => env('AMO_CRM_CLIENT_ID'),
+        'client_secret' => env('AMO_CRM_CLIENT_SECRET'),
+        'redirect' => env('AMO_CRM_REDIRECT_URI'),
+        'code' => env('AMO_CRM_CODE'),
+    ],
 ];

@@ -266,6 +266,9 @@ class ProjectsEditScreen extends Screen
                 ],
                 'Units' => [
                     Layout::table('project_units', [
+                        TD::make('id', 'ID'),
+                        TD::make('type', 'Type')->sort(),
+                        TD::make('price', 'Price')->sort(),
                         TD::make('address', 'Address')->sort()->filter(TD::FILTER_TEXT),
                         TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                             return $date->created_at->diffForHumans();

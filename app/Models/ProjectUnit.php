@@ -27,7 +27,7 @@ class ProjectUnit extends Model
     ];
 
     protected $allowedSorts = [
-        'address','price'
+        'address','type','price'
     ];
     protected $allowedFilters = ['address','price'];
 
