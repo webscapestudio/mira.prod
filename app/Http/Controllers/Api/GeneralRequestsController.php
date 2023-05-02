@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\GeneralRequestEmail;
-use App\Models\GeneralRequest;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Validator;
 
 class GeneralRequestsController extends Controller
@@ -77,16 +75,21 @@ class GeneralRequestsController extends Controller
                 $access_token = $dataToken["access_token"];
             }
 
-            $response = Http::withOptions([
+            $client = new Client([
                 'verify' => false,
-            ])->withHeaders([
-                'Authorization: Bearer ' . $access_token,
-            ])
-                ->post('https://dianovjs.amocrm.ru/api/v2/leads', $amoCRM_request);
+            ]);
 
+            $headers = [
+                'Authorization' => 'Bearer ' . $access_token,
+                'Accept' => 'application/json',
+            ];
 
-            if ($response->failed()) {
-                dd($response->body());
+            $response = $client->request('POST', config("services.ammo_crm.url") . 'api/v2/leads', [
+                'headers' => $headers,
+                RequestOptions::JSON => $amoCRM_request,
+            ]);
+
+            if ($response->getStatusCode() >= 400) {
                 return response()->json([
                     "success" => false,
                     "message" => "Request not sent"
@@ -98,7 +101,6 @@ class GeneralRequestsController extends Controller
                 ->subject('General Request Email');
             });
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return response()->json([
                 "success" => false,
                 "message" => "Request not sent"
@@ -121,16 +123,15 @@ class GeneralRequestsController extends Controller
                 'Accept' => 'application/json',
             ],
         ])
-            ->post(env('AMO_CRM_URL') . "oauth2/access_token", [
-                'client_id' => env('AMO_CRM_CLIENT_ID'),
-                'client_secret' => env('AMO_CRM_CLIENT_SECRET'),
+            ->post(config("services.ammo_crm.url") . "oauth2/access_token", [
+                'client_id' => config("services.ammo_crm.client_id"),
+                'client_secret' => config("services.ammo_crm.client_secret"),
                 'grant_type' => 'authorization_code',
-                'code' => env('AMO_CRM_CODE'),
-                'redirect_uri' => env('AMO_CRM_REDIRECT_URI'),
+                'code' => config("services.ammo_crm.code"),
+                'redirect_uri' => config("services.ammo_crm.redirect"),
             ]);
 
         if ($response->failed()) {
-            dd($response->body());
             response()->json([
                 "success" => false,
                 "message" => "Request not sent"
@@ -141,11 +142,11 @@ class GeneralRequestsController extends Controller
         $response = json_decode($response->body(), true);
 
         $arrParamsAmo = [
-            "access_token"  => $response['access_token'],
+            "access_token" => $response['access_token'],
             "refresh_token" => $response['refresh_token'],
-            "token_type"    => $response['token_type'],
-            "expires_in"    => $response['expires_in'],
-            "endTokenTime"  => $response['expires_in'] + time(),
+            "token_type" => $response['token_type'],
+            "expires_in" => $response['expires_in'],
+            "endTokenTime" => $response['expires_in'] + time(),
         ];
 
         $arrParamsAmo = json_encode($arrParamsAmo);
@@ -164,12 +165,12 @@ class GeneralRequestsController extends Controller
                 'Accept' => 'application/json',
             ],
         ])
-            ->post(env('AMO_CRM_URL') . "oauth2/access_token", [
-                'client_id' => env('AMO_CRM_CLIENT_ID'),
-                'client_secret' => env('AMO_CRM_CLIENT_SECRET'),
+            ->post(config("services.ammo_crm.url") . "oauth2/access_token", [
+                'client_id' => config("services.ammo_crm.client_id"),
+                'client_secret' => config("services.ammo_crm.client_secret"),
                 'grant_type' => 'refresh_token',
                 'refresh_token' => $refresh_token,
-                'redirect_uri' => env('AMO_CRM_REDIRECT_URI'),
+                'redirect_uri' => config("services.ammo_crm.redirect"),
             ]);
 
         if ($response->failed()) {
@@ -182,11 +183,11 @@ class GeneralRequestsController extends Controller
         $response = json_decode($response->body(), true);
 
         $arrParamsAmo = [
-            "access_token"  => $response['access_token'],
+            "access_token" => $response['access_token'],
             "refresh_token" => $response['refresh_token'],
-            "token_type"    => $response['token_type'],
-            "expires_in"    => $response['expires_in'],
-            "endTokenTime"  => $response['expires_in'] + time(),
+            "token_type" => $response['token_type'],
+            "expires_in" => $response['expires_in'],
+            "endTokenTime" => $response['expires_in'] + time(),
         ];
 
         $arrParamsAmo = json_encode($arrParamsAmo);
