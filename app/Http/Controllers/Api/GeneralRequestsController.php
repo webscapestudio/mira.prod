@@ -52,12 +52,64 @@ class GeneralRequestsController extends Controller
             'add' => [
                 [
                     'name' => $input['name'],
-                    'phone' => $input['phone'],
-                    'email' => $input['email'],
-                    'name_form' => $input['name_form'],
-                    'id_form' => $input['id_form'],
-                    'comment' => $input['comment'],
-                    'domain' => $input['domain'],
+                    "custom_fields" => [
+                        [
+                            'id' => 865617,
+                            'values' => [
+                                [
+                                    'value' => $input['email'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865619,
+                            'values' => [
+                                [
+                                    'value' => $input['name_form'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865639,
+                            'values' => [
+                                [
+                                    'value' => $input['phone'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865637,
+                            'values' => [
+                                [
+                                    'value' => geoip($request->ip())->getDisplayNameAttribute(),
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865641,
+                            'values' => [
+                                [
+                                    'value' => $input['id_form'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865643,
+                            'values' => [
+                                [
+                                    'value' => $input['comment'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865645,
+                            'values' => [
+                                [
+                                    'value' => $input['domain'],
+                                ],
+                            ],
+                        ],
+                    ]
                 ]
             ]];
 
