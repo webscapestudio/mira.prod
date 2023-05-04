@@ -57,6 +57,17 @@ class ResumeRequestsController extends Controller
         $message->to(env('MAIL_TO_ADDRESS'))->subject('Resume Request Email'); 
         $message->attach($file);
         });
+        elseif($request->get('comment')):
+            $res_request = [
+                'name' =>  $input['name'],
+                'email' => $input['email'],
+                'phone' => $input['phone'],
+                'comment' => $input['comment'],
+                'department'=> $input['department']
+                ];
+            Mail::send('mails.resume_request', $res_request, function($message) {
+            $message->to(env('MAIL_TO_ADDRESS'))->subject('Resume Request Email'); 
+            });
     elseif($request->get('attachment')):
         $image_64 =$input['attachment']; //your base64 encoded data
         $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
@@ -78,17 +89,6 @@ class ResumeRequestsController extends Controller
         Mail::send('mails.resume_request', $res_request, function($message)use ($file) {
         $message->to(env('MAIL_TO_ADDRESS'))->subject('Resume Request Email'); 
         $message->attach($file);
-        });
-    elseif($request->get('comment')):
-        $res_request = [
-            'name' =>  $input['name'],
-            'email' => $input['email'],
-            'phone' => $input['phone'],
-            'comment' => $input['comment'],
-            'department'=> $input['department']
-            ];
-        Mail::send('mails.resume_request', $res_request, function($message) {
-        $message->to(env('MAIL_TO_ADDRESS'))->subject('Resume Request Email'); 
         });
     else:
         $res_request = [

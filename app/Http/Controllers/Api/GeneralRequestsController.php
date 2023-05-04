@@ -52,12 +52,64 @@ class GeneralRequestsController extends Controller
             'add' => [
                 [
                     'name' => $input['name'],
-                    'phone' => $input['phone'],
-                    'email' => $input['email'],
-                    'name_form' => $input['name_form'],
-                    'id_form' => $input['id_form'],
-                    'comment' => $input['comment'],
-                    'domain' => $input['domain'],
+                    "custom_fields" => [
+                        [
+                            'id' => 865617,
+                            'values' => [
+                                [
+                                    'value' => $input['email'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865619,
+                            'values' => [
+                                [
+                                    'value' => $input['name_form'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865639,
+                            'values' => [
+                                [
+                                    'value' => $input['phone'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865637,
+                            'values' => [
+                                [
+                                    'value' => geoip($request->ip())->getDisplayNameAttribute(),
+                                ],
+                            ],
+                        ],
+			[
+                            'id' => 865641,
+                            'values' => [
+                                [
+                                    'value' => $input['id_form'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865643,
+                            'values' => [
+                                [
+                                    'value' => $input['comment'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 865645,
+                            'values' => [
+                                [
+                                    'value' => $input['domain'],
+                                ],
+                            ],
+                        ],
+                    ]
                 ]
             ]];
 
@@ -67,7 +119,7 @@ class GeneralRequestsController extends Controller
             }
 
             $dataToken = file_get_contents("tokens.txt");
-            $dataToken = json_decode($dataToken, true);
+	    $dataToken = json_decode($dataToken, true);
 
             if ($dataToken["endTokenTime"] - 60 < time()) {
                 $access_token = $this->refreshTokenAuth($dataToken["refresh_token"]);
@@ -96,10 +148,10 @@ class GeneralRequestsController extends Controller
                 ]);
             }
 
-            Mail::send('mails.general_request', $gen_request, function ($message) use ($gen_request) {
-                $message->to(env('MAIL_TO_ADDRESS'))                                            //почта
-                ->subject('General Request Email');
-            });
+            // Mail::send('mails.general_request', $gen_request, function ($message) use ($gen_request) {
+            //     $message->to(env('MAIL_TO_ADDRESS'))                                            //почта
+            //     ->subject('General Request Email');
+            // });
         } catch (\Exception $e) {
             return response()->json([
                 "success" => false,
