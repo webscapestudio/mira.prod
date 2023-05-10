@@ -16,9 +16,9 @@ class ProjectUnitsController extends Controller
 
         $project = Project::where('slug', $project_slug)->first();
         if($project):
-            $units =  ProjectUnitsResource::collection(ProjectUnit::orderBy('sortdd', 'ASC')->where('project_unitable_id',  $project->id)->get());
+            $units =  ProjectUnitsResource::collection(ProjectUnit::orderBy('price', 'ASC')->where('project_unitable_id',  $project->id)->get());
             if ($search_type = $request->type and $search_bedrooms_quantity= $request->bedrooms_quantity) :
-                $units = ProjectUnitsResource::collection(ProjectUnit::query()
+                $units = ProjectUnitsResource::collection(ProjectUnit::orderBy('price', 'ASC')
                     ->where('type', 'LIKE', "%{$search_type}%")
                     ->where('bedrooms_quantity', 'LIKE', "%{$search_bedrooms_quantity}%")
                     ->where('project_unitable_id',  $project->id)
@@ -26,14 +26,14 @@ class ProjectUnitsController extends Controller
                     return response()->json($units);
             endif;
             if ($search = $request->type) :
-                $units = ProjectUnitsResource::collection(ProjectUnit::query()
+                $units = ProjectUnitsResource::collection(ProjectUnit::orderBy('price', 'ASC')
                     ->where('type', 'LIKE', "%{$search}%")
                     ->where('project_unitable_id',  $project->id)
                     ->get());
                     return response()->json($units);
             endif;
             if ($search = $request->bedrooms_quantity) :
-                $units = ProjectUnitsResource::collection(ProjectUnit::query()
+                $units = ProjectUnitsResource::collection(ProjectUnit::orderBy('price', 'ASC')
                     ->where('bedrooms_quantity', 'LIKE', "%{$search}%")
                     ->where('project_unitable_id',  $project->id)
                     ->get());

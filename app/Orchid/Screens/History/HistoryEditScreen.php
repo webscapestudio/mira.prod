@@ -68,8 +68,8 @@ class HistoryEditScreen extends Screen
                 Input::make('history.year')->title('Year')->type('number')->required(),
                 Input::make('history.title')->title('Title')->type('text')->required(),
                 TextArea::make('history.description')->title('Description')->rows(5)->type('text')->required(),
-                Picture::make('history.image_desc')->title('Image desktop')->acceptedFiles('image/*,application/pdf,.psd')->required(),
-                Picture::make('history.image_mob')->title('Image desktop')->acceptedFiles('image/*,application/pdf,.psd')->required(),
+                Picture::make('history.image_desc')->title('Picture / Desktop')->acceptedFiles('image/*,application/pdf,.psd')->required(),
+                Picture::make('history.image_mob')->title('Picture / Mobile')->acceptedFiles('image/*,application/pdf,.psd')->required(),
             ]),
 
 

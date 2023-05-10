@@ -110,14 +110,14 @@ class ProjectsEditScreen extends Screen
                 'Project' => [
                     Layout::rows([
                         Input::make('project.slug')->title('Slug')->type('text')->required(),
-                        Input::make('project.title_first')->title('Title First')->type('text')->required(),
-                        Input::make('project.title_second')->title('Title Second')->type('text'),
+                        Input::make('project.title_first')->title('Title / First partition')->type('text')->required(),
+                        Input::make('project.title_second')->title('Title / Second partition')->type('text'),
                         Input::make('project.subtitle')->title('Subtitle')->type('text')->required(),
-                        TextArea::make('project.description')->title('Description')->required()->rows(5),
-                        Picture::make('project.image_main')->title('Image Main')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-                        Picture::make('project.image_preview')->title('Image Preview')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-                        Picture::make('project.image_cover')->title('Image Cover')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-                        Picture::make('project.image_informational')->title('Image Informational')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                        Quill::make('project.description')->title('Description')->required()->rows(5),
+                        Picture::make('project.image_main')->title('Picture / Main')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                        Picture::make('project.image_preview')->title('Picture / Preview')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                        Picture::make('project.image_cover')->title('Picture / Cover')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                        Picture::make('project.image_informational')->title('Picture / Informational')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                         TextArea::make('project.pictures_description')->title('Pictures Description')->rows(5),
                         Input::make('project.price')->title('Price')->type('number')->required()->mask([
                             'mask' => '999 999 999',
@@ -135,17 +135,17 @@ class ProjectsEditScreen extends Screen
                         Input::make('project.title_usp')->title('Title')->type('text'),
                         Quill::make('project.description_usp')->title('Description')->rows(5),
                         Picture::make('project.logo_usp')->title('Logo')->acceptedFiles('image/*,application/pdf,.psd'),
-                        Picture::make('project.image_first_usp')->title('Image First')->acceptedFiles('image/*,application/pdf,.psd'),
-                        Picture::make('project.image_second_usp')->title('Image Second')->acceptedFiles('image/*,application/pdf,.psd'),
+                        Picture::make('project.image_first_usp')->title('Picture / First')->acceptedFiles('image/*,application/pdf,.psd'),
+                        Picture::make('project.image_second_usp')->title('Picture / Second')->acceptedFiles('image/*,application/pdf,.psd'),
                     ]),
                 ],
                 'Location' => [
                     Layout::rows([
                         Input::make('project.address')->title('Address')->type('text')->required(),
-                        TextArea::make('project.description_location')->title('Description')->rows(5)->required(),
+                        Quill::make('project.description_location')->title('Description')->rows(5)->required(),
                         Input::make('project.coordinates_latitude')->title('Coordinates(latitude)')->type('text')->required(),
                         Input::make('project.coordinates_longitude')->title('Coordinates(longitude)')->type('text')->required(),
-                        Picture::make('project.image_location')->title('Image Location')->acceptedFiles('image/*,application/pdf,.psd')->required(),
+                        Picture::make('project.image_location')->title('Picture / Location')->acceptedFiles('image/*,application/pdf,.psd')->required(),
                     ]),
                 ],
                 'Pictures' => [
@@ -198,6 +198,7 @@ class ProjectsEditScreen extends Screen
                                 return "<img  class='mw-100 d-block img-fluid rounded-1 w-100' src='$point->image_preview' />";
                             }),
                         TD::make('title', 'Title')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('description', 'Description')->width('grow'),
                         TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                             return $date->created_at->diffForHumans();
                         }),
@@ -230,6 +231,7 @@ class ProjectsEditScreen extends Screen
                                 return "<img  class='mw-100 d-block img-fluid rounded-1 w-100' src='$advantage->image_pa' />";
                             }),
                         TD::make('title', 'Title')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('description', 'Description')->width('grow'),
                         TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                             return $date->created_at->diffForHumans();
                         }),
@@ -268,8 +270,12 @@ class ProjectsEditScreen extends Screen
                     Layout::table('project_units', [
                         TD::make('id', 'ID'),
                         TD::make('type', 'Type')->sort(),
-                        TD::make('price', 'Price')->sort(),
-                        TD::make('address', 'Address')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('price', 'Price')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('floor', 'Floor')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('series', 'Series')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('bathrooms_quantity', 'Bathrooms(quantity)')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('bedrooms_quantity', 'Bedrooms(quantity)')->sort()->filter(TD::FILTER_TEXT),
+                        TD::make('view', 'View')->sort()->filter(TD::FILTER_TEXT),
                         TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                             return $date->created_at->diffForHumans();
                         }),

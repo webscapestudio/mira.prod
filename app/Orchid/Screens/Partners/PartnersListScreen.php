@@ -60,7 +60,9 @@ class PartnersListScreen extends Screen
                         return "<img  class='mw-100 d-block img-fluid rounded-1 w-100' src='$partner->logo' />";
                     }),
                 TD::make('title', 'Title')->sort()->filter(TD::FILTER_TEXT),
-                TD::make('description', 'Description')->sort(),
+                TD::make('description', 'Description')->width('grow')->sort()->render(function ($partners) {
+                    return $partners['description'];
+                }),
 
                 TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                     return $date->created_at->diffForHumans();

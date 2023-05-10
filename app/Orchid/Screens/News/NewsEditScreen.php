@@ -67,7 +67,7 @@ class NewsEditScreen extends Screen
                 Layout::rows([
                     Input::make('new.title')->title('Title')->type('text')->required(),
                     Quill::make('new.content')->title('Content')->required(),
-                    Picture::make('new.image_desc')->title('Image')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                    Picture::make('new.image_desc')->title('Picture')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                     DateTimer::make('new.created_at')->title('Date')->allowInput()->required(),
                 ])
             ];

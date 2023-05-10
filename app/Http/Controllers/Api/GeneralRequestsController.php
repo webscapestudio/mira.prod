@@ -10,246 +10,100 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Validator;
-
+use Illuminate\Support\Facades\Route;
 class GeneralRequestsController extends Controller
 {
 
-    //-----------------------------------------------------------------------------------------------------------------------
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function store(Request $request): JsonResponse
+
+    public function store(Request $request)
     {
-        $input = $request->json()->all();
+        $input = $request->all();
+        if($request->get('utm_source') and $request->get('utm_medium') and $request->get('utm_campaign')):
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'], 
+                'domain'=> $input['url'],
+                'utm_source'=> $input['utm_source'], 
+                'utm_medium'=> $input['utm_medium'], 
+                'utm_campaign'=> $input['utm_campaign']
+              ];
+        elseif ($request->get('utm_source') and $request->get('utm_medium')):
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'], 
+                'domain'=> $input['url'],
+                'utm_source'=> $input['utm_source'], 
+                'utm_medium'=> $input['utm_medium']
+              ];
+        elseif ($request->get('utm_source') and $request->get('utm_campaign')):
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'], 
+                'domain'=> $input['url'],
+                'utm_source'=> $input['utm_source'], 
+                'utm_campaign'=> $input['utm_campaign']
+                ];
+        elseif ($request->get('utm_medium') and $request->get('utm_campaign')):
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'], 
+                'domain'=> $input['url'],
+                'utm_medium'=> $input['utm_medium'], 
+                'utm_campaign'=> $input['utm_campaign']
+                ];
+        elseif ($request->get('utm_source')):
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'], 
+                'domain'=> $input['url'],
+                'utm_source'=> $input['utm_source']
+                ];
+        elseif ($request->get('utm_medium')):
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'], 
+                'domain'=> $input['url'],
+                'utm_medium'=> $input['utm_medium']
+                ];
+        elseif ($request->get('utm_campaign')):
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'], 
+                'domain'=> $input['url'],
+                'utm_campaign'=> $input['utm_campaign']
+                ];
+        else:
+            $array = [
+                'name'    =>  $input['name'],
+                'phone'    => $input['phone'],
+                'geoip'    =>file_get_contents('http://ip-api.com/line/'.geoip($request->ip())->ip.'?fields=country'),
+                'comment'    => $input['url'],
+                'domain'=> $input['url'],
+                ];
+        endif;
 
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'phone' => 'required',
-            'email' => 'required|email',
-            'name_form' => 'required',
-            'id_form' => 'required',
-            'comment' => 'required',
-            'domain' => 'required',
-            'utm_source' => 'nullable',
-            'utm_medium' => 'nullable',
-            'utm_term' => 'nullable',
-            'utm_content' => 'nullable',
-            'utm_campaign' => 'nullable',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
-        }
+              $ch = curl_init('https://mtlead.ru/api.php');
+              curl_setopt($ch, CURLOPT_POST, 1);
+              curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($array, '', '&'));
+              curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+              curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+              curl_setopt($ch, CURLOPT_HEADER, false);
+              $html = curl_exec($ch);
+              curl_close($ch);
 
-        $gen_request = [
-            'name' => $input['name'],
-            'phone' => $input['phone'],
-        ];
-
-        $amoCRM_request = [
-            'add' => [
-                [
-                    'name' => $input['name'],
-                    "custom_fields" => [
-                        [
-                            'id' => 865617,
-                            'values' => [
-                                [
-                                    'value' => $input['email'],
-                                ],
-                            ],
-                        ],
-                        [
-                            'id' => 865619,
-                            'values' => [
-                                [
-                                    'value' => $input['name_form'],
-                                ],
-                            ],
-                        ],
-                        [
-                            'id' => 865639,
-                            'values' => [
-                                [
-                                    'value' => $input['phone'],
-                                ],
-                            ],
-                        ],
-                        [
-                            'id' => 865637,
-                            'values' => [
-                                [
-                                    'value' => geoip($request->ip())->getDisplayNameAttribute(),
-                                ],
-                            ],
-                        ],
-			[
-                            'id' => 865641,
-                            'values' => [
-                                [
-                                    'value' => $input['id_form'],
-                                ],
-                            ],
-                        ],
-                        [
-                            'id' => 865643,
-                            'values' => [
-                                [
-                                    'value' => $input['comment'],
-                                ],
-                            ],
-                        ],
-                        [
-                            'id' => 865645,
-                            'values' => [
-                                [
-                                    'value' => $input['domain'],
-                                ],
-                            ],
-                        ],
-                    ]
-                ]
-            ]];
-
-        try {
-            if (!file_exists("tokens.txt")) {
-                $this->baseAuth();
-            }
-
-            $dataToken = file_get_contents("tokens.txt");
-	    $dataToken = json_decode($dataToken, true);
-
-            if ($dataToken["endTokenTime"] - 60 < time()) {
-                $access_token = $this->refreshTokenAuth($dataToken["refresh_token"]);
-            } else {
-                $access_token = $dataToken["access_token"];
-            }
-            
-            $client = new Client([
-                'verify' => false,
-            ]);
-
-            $headers = [
-                'Authorization' => 'Bearer ' . $access_token,
-                'Accept' => 'application/json',
-            ];
-            
-            $response = $client->request('POST', config("services.ammo_crm.url") . 'api/v2/leads', [
-                'headers' => $headers,
-                RequestOptions::JSON => $amoCRM_request,
-            ]);
-
-            if ($response->getStatusCode() >= 400) {
-                return response()->json([
-                    "success" => false,
-                    "message" => "Request not sent"
-                ]);
-            }
-
-            // Mail::send('mails.general_request', $gen_request, function ($message) use ($gen_request) {
-            //     $message->to(env('MAIL_TO_ADDRESS'))                                            //почта
-            //     ->subject('General Request Email');
-            // });
-        } catch (\Exception $e) {
-            return response()->json([
-                "success" => false,
-                "message" => "Request not sent"
-            ]);
-        }
-
-
-        return response()->json([
-            "success" => true,
-            "message" => "Request sent"
-        ]);
     }
-
-    private function baseAuth(): void
-    {
-        $response = Http::withOptions([
-            'verify' => false,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-        ])
-            ->post(config("services.ammo_crm.url") . "oauth2/access_token", [
-                'client_id' => config("services.ammo_crm.client_id"),
-                'client_secret' => config("services.ammo_crm.client_secret"),
-                'grant_type' => 'authorization_code',
-                'code' => config("services.ammo_crm.code"),
-                'redirect_uri' => config("services.ammo_crm.redirect"),
-            ]);
-
-        if ($response->failed()) {
-            response()->json([
-                "success" => false,
-                "message" => "Request not sent"
-            ]);
-            return;
-        }
-
-        $response = json_decode($response->body(), true);
-
-        $arrParamsAmo = [
-            "access_token" => $response['access_token'],
-            "refresh_token" => $response['refresh_token'],
-            "token_type" => $response['token_type'],
-            "expires_in" => $response['expires_in'],
-            "endTokenTime" => $response['expires_in'] + time(),
-        ];
-
-        $arrParamsAmo = json_encode($arrParamsAmo);
-
-        $f = fopen("tokens.txt", 'w');
-        fwrite($f, $arrParamsAmo);
-        fclose($f);
-    }
-
-    private function refreshTokenAuth(string $refresh_token): string
-    {
-        $response = Http::withOptions([
-            'verify' => false,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-        ])
-            ->post(config("services.ammo_crm.url") . "oauth2/access_token", [
-                'client_id' => config("services.ammo_crm.client_id"),
-                'client_secret' => config("services.ammo_crm.client_secret"),
-                'grant_type' => 'refresh_token',
-                'refresh_token' => $refresh_token,
-                'redirect_uri' => config("services.ammo_crm.redirect"),
-            ]);
-
-        if ($response->failed()) {
-            return response()->json([
-                "success" => false,
-                "message" => "Request not sent"
-            ]);
-        }
-
-        $response = json_decode($response->body(), true);
-
-        $arrParamsAmo = [
-            "access_token" => $response['access_token'],
-            "refresh_token" => $response['refresh_token'],
-            "token_type" => $response['token_type'],
-            "expires_in" => $response['expires_in'],
-            "endTokenTime" => $response['expires_in'] + time(),
-        ];
-
-        $arrParamsAmo = json_encode($arrParamsAmo);
-
-        $f = fopen("tokens.txt", 'w');
-        fwrite($f, $arrParamsAmo);
-        fclose($f);
-
-        return $response['access_token'];
-    }
-
-//-----------------------------------------------------------------------------------------------------------------------
 }

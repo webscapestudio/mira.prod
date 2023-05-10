@@ -62,9 +62,9 @@ class PointEditScreen extends Screen
             Input::make('project_progress_point.date')->title('Date')->type('date')->required(),
             Input::make('project_progress_point.title')->required()->title('Title'),
             TextArea::make('project_progress_point.description')->required()->title('Description')->rows(5),
-            Picture::make('project_progress_point.image_preview')->required()->title('Image Preview')->acceptedFiles('image/*,application/pdf,.psd'),
-            Picture::make('project_progress_point.image_main')->title('Image Main')->acceptedFiles('image/*,application/pdf,.psd'),
-            Input::make('project_progress_point.video')->title('Video(Id)'),
+            Picture::make('project_progress_point.image_preview')->required()->title('Picture / Preview')->acceptedFiles('image/*,application/pdf,.psd'),
+            Picture::make('project_progress_point.image_main')->title('Picture / Main')->acceptedFiles('image/*,application/pdf,.psd'),
+            Input::make('project_progress_point.video')->title('Video ID from Vimeo'),
             TextArea::make('project_progress_point.media_description')->title('Description Media')->rows(5),
         ]),
         ];

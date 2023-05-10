@@ -13,7 +13,7 @@ use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
-
+use Orchid\Screen\Fields\Quill;
 class PartnersEditScreen extends Screen
 {
     /**
@@ -67,7 +67,7 @@ class PartnersEditScreen extends Screen
                     ->title('Title')
                     ->type('text')
                     ->required(),
-                TextArea::make('partner.description')->title('Description')->required()->rows(5),
+                    Quill::make('partner.description')->title('Description')->required()->rows(5),
                 Picture::make('partner.logo')->title('Logo')->required()->acceptedFiles('image/*,application/pdf,.psd'),
                 Upload::make('partner.attachment')->title('Photo')->required()->acceptedFiles('image/*,application/pdf,.psd'),
             ])

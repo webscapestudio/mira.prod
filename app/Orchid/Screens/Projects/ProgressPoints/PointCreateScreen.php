@@ -66,9 +66,9 @@ class PointCreateScreen extends Screen
                 Input::make('date')->title('Date')->type('date')->required(),
                 Input::make('title')->required()->title('Title'),
                 TextArea::make('description')->required()->title('Description')->rows(5),
-                Picture::make('image_preview')->required()->title('Image Preview')->acceptedFiles('image/*,application/pdf,.psd'),
-                Picture::make('image_main')->title('Image Main')->acceptedFiles('image/*,application/pdf,.psd'),
-                Input::make('video')->title('Video(Id)'),
+                Picture::make('image_preview')->required()->title('Picture / Preview')->acceptedFiles('image/*,application/pdf,.psd'),
+                Picture::make('image_main')->title('Picture / Main')->acceptedFiles('image/*,application/pdf,.psd'),
+                Input::make('video')->title('Video ID from Vimeo'),
                 TextArea::make('media_description')->title('Description Media')->rows(5),
         ]),
         ];

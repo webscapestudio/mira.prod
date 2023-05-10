@@ -66,8 +66,8 @@ class AdvantagesEditScreen extends Screen
             Layout::rows([
                 Input::make('advantage.title')->title('Title')->type('text')->required(),
                 TextArea::make('advantage.description')->title('Description')->type('text')->required()->rows(5),
-                Picture::make('advantage.image_desc')->maxFileSize(2)->title('Image (desktop)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-                Picture::make('advantage.image_mob')->title('Image (mobile)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                Picture::make('advantage.image_desc')->maxFileSize(2)->title('Picture / Desktop')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                Picture::make('advantage.image_mob')->title('Picture / Mobile')->required()->acceptedFiles('image/*,application/pdf,.psd'),
             ]),
         ];
     }

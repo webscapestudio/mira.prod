@@ -11,7 +11,7 @@ use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
-
+use Orchid\Screen\Fields\Quill;
 class ManifestoEditScreen extends Screen
 {
     /**
@@ -60,11 +60,11 @@ class ManifestoEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('manifesto.title')->title('Title')->type('text')->required(),
-                TextArea::make('manifesto.description')->title('Description')->type('text')->required()->rows(5),
-                Input::make('manifesto.image_desc_title')->title('Desktop image title')->type('text')->required(),
-                Picture::make('manifesto.image_desc')->title('Image desktop')->acceptedFiles('image/*,application/pdf,.psd')->required(),
-                Input::make('manifesto.image_mob_title')->title('Mobile image title')->type('text')->required(),
-                Picture::make('manifesto.image_mob')->title('Image mobile')->acceptedFiles('image/*,application/pdf,.psd')->required(),
+                Quill::make('manifesto.description')->title('Description')->type('text')->required()->rows(5),
+                Input::make('manifesto.image_desc_title')->title('Pictures titles / First')->type('text')->required(),
+                Input::make('manifesto.image_mob_title')->title('Pictures titles / Second')->type('text')->required(),
+                Picture::make('manifesto.image_desc')->title('Picture / First')->acceptedFiles('image/*,application/pdf,.psd')->required(),
+                Picture::make('manifesto.image_mob')->title('Picture / Second')->acceptedFiles('image/*,application/pdf,.psd')->required(),
             ]),
         ];
     }

@@ -69,13 +69,13 @@ class BannersEdit extends Screen
         return [
             Layout::rows([
                 Input::make('banner.title_first')
-                    ->title('Title first')
+                    ->title('Title / First partition')
                     ->type('text')
                     ->required(),
-                Input::make('banner.title_second')->title('Title second')->type('text')->required(),
+                Input::make('banner.title_second')->title('Title / Second partition')->type('text')->required(),
                 Select::make('banner.project')->fromModel(Project::class, 'slug')->title('Project')->required(),
-                Picture::make('banner.image_desc')->title('Image (desktop)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
-                Picture::make('banner.image_mob')->title('Image (mobile)')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                Picture::make('banner.image_desc')->title('Picture / Desktop')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                Picture::make('banner.image_mob')->title('Picture / Mobile')->required()->acceptedFiles('image/*,application/pdf,.psd'),
             ])
         ];
     }

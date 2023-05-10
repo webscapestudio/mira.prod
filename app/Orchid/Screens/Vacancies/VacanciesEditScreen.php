@@ -67,7 +67,7 @@ class VacanciesEditScreen extends Screen
             Layout::rows([
                 Input::make('vacancie.title')->title('Title')->type('text')->required(),
                 Quill::make('vacancie.content')->title('Content')->required(),
-                Picture::make('vacancie.image_desc')->title('Image')->required()->acceptedFiles('image/*,application/pdf,.psd'),
+                Picture::make('vacancie.image_desc')->title('Picture')->required()->acceptedFiles('image/*,application/pdf,.psd'),
             ])
         ];
     }

@@ -59,7 +59,9 @@ class AchievementsScreen extends Screen
         return [
             Layout::table('achievements', [
                 TD::make('number', "Number")->width('100px')->sort()->filter(TD::FILTER_NUMERIC),
-                TD::make('addition', "Addition")->width('120px')->sort(),
+                TD::make('addition', "Addition")->width('120px')->sort()->render(function ($achievements) {
+                    return $achievements['addition'];
+                }),
                 TD::make('description', "Description")->width('grow')->sort(),
                 TD::make(__('Actions'))
                     ->align(TD::ALIGN_CENTER)

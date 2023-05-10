@@ -74,9 +74,9 @@ class ContactsEditScreen extends Screen
                 Input::make('contact.phone')->title('Phone')->type('text')->required()
             ]),
             Layout::table('socials', [
-                TD::make('title', 'title')->width('180px')->sort()->filter(TD::FILTER_TEXT),
-                TD::make('short_title', 'short_title')->width('grow')->sort(),
-                TD::make('url', 'url')->width('grow')->sort(),
+                TD::make('title', 'Title')->width('180px')->sort()->filter(TD::FILTER_TEXT),
+                TD::make('short_title', 'Short title')->width('grow')->sort(),
+                TD::make('url', 'URL')->width('grow')->sort(),
                 TD::make('created_at', 'Created')->width('160px')->render(function ($date) {
                     return $date->created_at->diffForHumans();
                 }),

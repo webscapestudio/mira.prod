@@ -18,7 +18,7 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
-
+use Orchid\Screen\Fields\Quill;
 class AboutUsEditScreen extends Screen
 {
     /**
@@ -83,19 +83,19 @@ class AboutUsEditScreen extends Screen
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
-    public function layout(): iterable
+    public function layout(): iterable 
     {
         return [
             Layout::rows([
                 Input::make('about_us.title')->title('Title')->type('text')->required(),
-                TextArea::make('about_us.description')->title('Description')->type('text')->required()->rows(5),
+                Quill::make('about_us.description')->title('Description')->type('text')->required()->rows(5),
                 Select::make('about_us.text_size')
                     ->options([
                         'big'   => 'Big',
                         'small' => 'Small',
                     ])->title('Text size')->required(),
-                Picture::make('about_us.image_desc')->title('Image desktop')->acceptedFiles('image/*,application/pdf,.psd')->required(),
-                Picture::make('about_us.image_mob')->title('Image mobile')->acceptedFiles('image/*,application/pdf,.psd')->required(),
+                Picture::make('about_us.image_desc')->title('Picture / Desktop')->acceptedFiles('image/*,application/pdf,.psd')->required(),
+                Picture::make('about_us.image_mob')->title('Picture / Mobile')->acceptedFiles('image/*,application/pdf,.psd')->required(),
             ]),
 
             Layout::table('about_achievements', [

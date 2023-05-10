@@ -15,7 +15,7 @@ class ProjectUnitResource extends JsonResource
      */
     public function toArray($request)
     {
-        $units = ProjectUnitsResource::collection(ProjectUnit::where('bedrooms_quantity', $this->bedrooms_quantity)->
+        $units = ProjectUnitsResource::collection(ProjectUnit::orderBy('price', 'ASC')->where('bedrooms_quantity', $this->bedrooms_quantity)->
         where('type', $this->type)->where('project_unitable_id',  $this->project_unitable_id)->where('id', '!=' , $this->id)->get());
         $pictures = [];
         foreach($this->attachment as $attach):

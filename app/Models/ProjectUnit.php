@@ -27,9 +27,9 @@ class ProjectUnit extends Model
     ];
 
     protected $allowedSorts = [
-        'address','type','price'
+        'type','price','floor','series', 'bathrooms_quantity','bedrooms_quantity','view',
     ];
-    protected $allowedFilters = ['address','price'];
+    protected $allowedFilters = ['floor','price','series', 'bathrooms_quantity','bedrooms_quantity','view',];
 
 
     public function project_unitable()
